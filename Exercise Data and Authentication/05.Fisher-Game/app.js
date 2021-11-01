@@ -1,11 +1,18 @@
 function attachEvents() {
   document.querySelector(".load").addEventListener("click", showCatches);
+
+  let btnAdd = document.querySelector("#addForm > .add");
+  btnAdd.disabled = localStorage.getItem("authorization") === null;
+
+  btnAdd.addEventListener("click", createNewCatch);
 }
 
 async function showCatches() {
   let responce = await fetch("http://localhost:3030/data/catches");
   let data = await responce.json();
   let catchElement = document.querySelector("#catches");
+
+  catchElement.innerHTML = "";
 
   data.forEach((x) => {
     let ss = creaeElements(x);
@@ -80,9 +87,11 @@ function creaeElements(x) {
   let btnUpdate = document.createElement("button");
   btnUpdate.textContent = "Update";
   btnUpdate.disabled = true;
+  btnUpdate.id = "updateBtn";
   let btnDelete = document.createElement("button");
   btnDelete.textContent = "Delete";
   btnDelete.disabled = true;
+  btnDelete.id = "deleteBt";
 
   classElement.appendChild(label);
   classElement.appendChild(inputName);
@@ -106,6 +115,34 @@ function creaeElements(x) {
   classElement.appendChild(btnDelete);
 
   return classElement;
+}
+
+async function createNewCatch() {
+  let angler = document.querySelector(".angler").value;
+  let weight = document.querySelector(".weight").value;
+  let species = document.querySelector(".species").value;
+  let location = document.querySelector(".location").value;
+  let bait = document.querySelector(".bait").value;
+  let captureTime = document.querySelector(".captureTime").value;
+
+  let token = localStorage.getItem("authorization");
+
+  const responce = await fetch("http://localhost:3030/data/catches ", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Authorization": token,
+    },
+    body: JSON.stringify({
+      angler,
+      weight,
+      species,
+      location,
+      bait,
+      captureTime,
+    }),
+  });
+  await showCatches();
 }
 
 attachEvents();
