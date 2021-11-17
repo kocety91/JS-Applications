@@ -1,4 +1,5 @@
 import { html } from "../../node_modules/lit-html/lit-html.js";
+import { allCarsByOwnerId } from "../api/data.js";
 
 const myListingTemplate = (data) => html`
   <section id="my-listings">
@@ -29,4 +30,7 @@ const signleTemplate = (car) => html`
   </div>
 `;
 
-export async function myListingPage(ctx) {}
+export async function myListingPage(ctx) {
+  let data = await allCarsByOwnerId();
+  ctx.render(myListingTemplate(data));
+}

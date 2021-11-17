@@ -26,3 +26,15 @@ export async function edit(id, data) {
 export async function deleteCar(id) {
   return await api.del(host + "/data/cars/" + id);
 }
+
+export async function allCarsByOwnerId() {
+  let userId = sessionStorage.getItem("userId");
+  return await api.get(
+    host +
+      `/data/cars?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`
+  );
+}
+
+export async function search(year) {
+  return await api.get(host + "/data/cars?where=year%3D" + year);
+}

@@ -9,6 +9,7 @@ import { createPage } from "./views/create.js";
 import { detailPage } from "./views/details.js";
 import { editPage } from "./views/edit.js";
 import { myListingPage } from "./views/my-listing.js";
+import { searchPage } from "./views/search.js";
 
 page("/index.html", middleware, homePage);
 page("/", middleware, homePage);
@@ -19,6 +20,7 @@ page("/create", middleware, createPage);
 page("/details/:id", middleware, detailPage);
 page("/edit/:id", middleware, editPage);
 page("/my-listing", middleware, myListingPage);
+page("/search", middleware, searchPage);
 
 let main = document.querySelector("#site-content");
 document.querySelector("#logout").addEventListener("click", async () => {
